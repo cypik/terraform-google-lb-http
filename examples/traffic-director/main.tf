@@ -17,6 +17,9 @@ module "vpc" {
   auto_create_subnetworks                   = true
 }
 
+#####==============================================================================
+##### gce-lb-http module call.
+#####==============================================================================
 module "load_balancer" {
   source                = "../../"
   name                  = "traffic-director-lb"

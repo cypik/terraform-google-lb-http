@@ -29,7 +29,7 @@ resource "tls_self_signed_cert" "example" {
 
 resource "google_compute_ssl_certificate" "example" {
   count       = 3
-  name        = "${var.network_name}-cert-${count.index + 1}"
+  name        = "cert-${count.index + 1}"
   private_key = tls_private_key.example[count.index].private_key_pem
   certificate = tls_self_signed_cert.example[count.index].cert_pem
 }

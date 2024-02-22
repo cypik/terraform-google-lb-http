@@ -11,7 +11,7 @@ resource "google_certificate_manager_certificate" "all" {
   project     = data.google_client_config.current.project
   managed {
     domains = [
-      "example.com",
+      "suresh.influbot.ai",
     ]
   }
 }
@@ -28,5 +28,5 @@ resource "google_certificate_manager_certificate_map_entry" "map_entry_web1" {
   description  = "My test certificate map entry"
   map          = google_certificate_manager_certificate_map.certificate_map.name
   certificates = [google_certificate_manager_certificate.all.id]
-  hostname     = "example.com"
+  hostname     = "suresh.influbot.ai"
 }

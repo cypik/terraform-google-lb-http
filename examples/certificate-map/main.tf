@@ -16,9 +16,12 @@ locals {
   }
 }
 
+#####==============================================================================
+##### gce-lb-http module call.
+#####==============================================================================
 module "gce-lb-https" {
   source            = "../../"
-  name              = var.network_name
+  name              = "gce-lb-https"
   environment       = "test"
   firewall_networks = [module.vpc.vpc_id]
   url_map           = google_compute_url_map.https-multi-cert.self_link
@@ -78,7 +81,7 @@ module "gce-lb-https" {
 }
 
 resource "google_compute_url_map" "https-multi-cert" {
-  name            = var.network_name
+  name            = "multi-cert"
   default_service = module.gce-lb-https.backend_services["default"].self_link
 
   host_rule {
