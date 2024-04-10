@@ -18,10 +18,10 @@ To use this module, you should have Terraform installed and configured for GCP. 
 
 # Example: cdn-policy
 ```hcl
-module "gce-lb-http" {
+module "lb-http" {
   source            = "cypik/lb-http/google"
   version           = "1.0.0"
-  name              = "mig-http-lb"
+  name              = "http-lb"
   environment       = "test"
   target_tags       = ["web-server"]
   firewall_networks = [module.vpc.vpc_id]
@@ -71,10 +71,10 @@ module "gce-lb-http" {
 ```
 # Example: certificate-map
 ```hcl
-module "gce-lb-https" {
+module "lb-https" {
   source            = "cypik/lb-http/google"
   version           = "1.0.0"
-  name              = var.network_name
+  name              = "lb-https"
   environment       = "test"
   firewall_networks = [module.vpc.vpc_id]
   url_map           = google_compute_url_map.https-multi-cert.self_link
@@ -132,16 +132,17 @@ module "gce-lb-https" {
 
   depends_on = [google_certificate_manager_certificate_map.certificate_map]
 }
+
 ```
 
 # Example: https-redirect
 
 ```hcl
 
-module "gce-lb-http" {
+module "lb-http" {
   source            = "cypik/lb-http/google"
   version           = "1.0.0"
-  name              = "ci-https-redirect"
+  name              = "https-redirect"
   environment       = "test"
   target_tags       = [var.network_name]
   firewall_networks = [module.vpc.vpc_id]
@@ -181,10 +182,10 @@ module "gce-lb-http" {
 # Example: shared-vpc
 
 ```hcl
-module "gce-lb-http" {
+module "lb-http" {
   source            = "cypik/lb-http/google"
   version           = "1.0.0"
-  name              = "group-http-lb"
+  name              = "http-lb"
   environment       = "test"
   target_tags       = ["allow-shared-vpc-mig"]
   firewall_projects = [var.host_project]
@@ -225,13 +226,13 @@ module "gce-lb-http" {
 
 ```hcl
 
-module "load_balancer" {
+module "lb_traffic" {
   source                = "cypik/lb-http/google"
   version               = "1.0.0"
   name                  = "traffic-director-lb"
   environment           = "test"
   create_address        = false
-  load_balancing_scheme = "http_SELF_MANAGED"
+  load_balancing_scheme = "INTERNAL_SELF_MANAGED"
   network               = module.vpc.vpc_id
   address               = "0.0.0.0"
   firewall_networks     = []
@@ -273,10 +274,10 @@ module "load_balancer" {
 
 ```hcl
 
-module "gce-lb-https" {
+module "lb-https" {
   source                          = "cypik/lb-http/google"
   version                         = "1.0.0"
-  name                            = var.network_name
+  name                            = "app"
   environment                     = "test"
   firewall_networks               = [module.vpc.self_link]
   url_map                         = google_compute_url_map.https-multi-cert.self_link
@@ -286,7 +287,7 @@ module "gce-lb-https" {
   private_key                     = tls_private_key.single_key.private_key_pem
   certificate                     = tls_self_signed_cert.single_cert.cert_pem
   managed_ssl_certificate_domains = ["test.example.com"]
-  ssl_certificates                = google_compute_ssl_certificate.example.*.self_link
+  ssl_certificates                = google_compute_ssl_certificate.example[*].self_link
 
   backends = {
     default = {
