@@ -96,9 +96,12 @@ module "instance_group" {
   }]
 }
 
-module "gce-lb-http" {
+#####==============================================================================
+##### lb-http module call.
+#####==============================================================================
+module "lb-http" {
   source            = "../../"
-  name              = "mig-http-lb"
+  name              = "http-lb"
   environment       = "test"
   target_tags       = ["web-server"]
   firewall_networks = [module.vpc.vpc_id]

@@ -96,10 +96,12 @@ module "instance_group" {
   }]
 }
 
-
-module "gce-lb-http" {
+#####==============================================================================
+##### lb-http module call.
+#####==============================================================================
+module "lb-http" {
   source            = "../../"
-  name              = "ci-https-redirect"
+  name              = "https-redirect"
   environment       = "test"
   target_tags       = [var.network_name]
   firewall_networks = [module.vpc.vpc_id]

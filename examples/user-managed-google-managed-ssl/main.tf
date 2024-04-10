@@ -106,8 +106,10 @@ locals {
     port         = 80
   }
 }
-
-module "gce-lb-https" {
+#####==============================================================================
+##### lb-https module call.
+#####==============================================================================
+module "lb-https" {
   source                          = "../../"
   name                            = "app"
   environment                     = "test"
@@ -174,7 +176,7 @@ module "gce-lb-https" {
 resource "google_compute_url_map" "https-multi-cert" {
   // note that this is the name of the load balancer
   name            = "multi-cert"
-  default_service = module.gce-lb-https.backend_services["default"].self_link
+  default_service = module.lb-https.backend_services["default"].self_link
 
   host_rule {
     hosts        = ["*"]
@@ -183,14 +185,14 @@ resource "google_compute_url_map" "https-multi-cert" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = module.gce-lb-https.backend_services["default"].self_link
+    default_service = module.lb-https.backend_services["default"].self_link
 
     path_rule {
       paths = [
         "/group1",
         "/group1/*"
       ]
-      service = module.gce-lb-https.backend_services["mig1"].self_link
+      service = module.lb-https.backend_services["mig1"].self_link
     }
 
     path_rule {

@@ -17,7 +17,10 @@ module "vpc" {
   auto_create_subnetworks                   = true
 }
 
-module "load_balancer" {
+#####==============================================================================
+##### lb-http module call.
+#####==============================================================================
+module "lb_traffic" {
   source                = "../../"
   name                  = "traffic-director-lb"
   environment           = "test"
