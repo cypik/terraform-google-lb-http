@@ -97,9 +97,9 @@ module "instance_group" {
 }
 
 #####==============================================================================
-##### gce-lb-http module call.
+##### lb-http module call.
 #####==============================================================================
-module "gce-lb-http" {
+module "lb-http" {
   source            = "../../"
   name              = "ci-https-redirect"
   environment       = "test"

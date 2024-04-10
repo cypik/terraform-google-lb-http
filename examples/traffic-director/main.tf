@@ -18,9 +18,9 @@ module "vpc" {
 }
 
 #####==============================================================================
-##### gce-lb-http module call.
+##### lb-http module call.
 #####==============================================================================
-module "load_balancer" {
+module "lb_traffic" {
   source                = "../../"
   name                  = "traffic-director-lb"
   environment           = "test"
